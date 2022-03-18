@@ -7,9 +7,13 @@ import 'package:path_provider/path_provider.dart';
 
 class PdfNetScaffold extends StatelessWidget {
   final String pdfUrl;
-  final String title;
+  final double? topPadding;
+  final double? height;
+  final double? width;
 
-  PdfNetScaffold({Key? key, required this.pdfUrl, this.title = "详情"})
+  PdfNetScaffold({Key? key, required this.pdfUrl, this.topPadding,
+    required this.height,
+    required this.width,})
       : super(key: key);
 
   @override
@@ -23,15 +27,15 @@ class PdfNetScaffold extends StatelessWidget {
       //需要更新数据对应的Widget
       builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
         if (snapshot.data == null) {
-          return Scaffold(
-            body: const Center(
+          return  const Center(
               child: CircularProgressIndicator(),
-            ),
-            appBar: AppBar(title: Text(title)),
+
           );
         }
         return PdfScaffold(
           path: snapshot.data!.path,
+          height: height,
+          width: width,
         );
       },
     );

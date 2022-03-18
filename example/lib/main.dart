@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<File> createFileOfPdfUrl() async {
-    final url = "http://africau.edu/images/default/sample.pdf";
+    final url = "https://norilsktgaz-mobile-app.ru/storage/2022/01/30/f48920783d3f7de322f9e0da5a17664444ee7d66.pdf";
     final filename = url.substring(url.lastIndexOf("/") + 1);
     var request = await HttpClient().getUrl(Uri.parse(url));
     var response = await request.close();
@@ -46,37 +46,21 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(title: const Text('Plugin example app')),
       body: Center(
-        child: RaisedButton(
-          child: Text("Open PDF"),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PDFScreen(pathPDF)),
-          ),
-        ),
+        child:
+
+        PdfScaffold(
+          path: pathPDF,
+          topPadding:100,
+          height: mediaQuery.size.height-150,
+          width: mediaQuery.size.width,
+
+        )
       ),
     );
   }
 }
 
-class PDFScreen extends StatelessWidget {
-  String pathPDF = "";
-  PDFScreen(this.pathPDF);
-
-  @override
-  Widget build(BuildContext context) {
-    return PdfScaffold(
-        appBar: AppBar(
-          title: Text("Document"),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.share),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        path: pathPDF);
-  }
-}

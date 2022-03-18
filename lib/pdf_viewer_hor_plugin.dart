@@ -6,12 +6,18 @@ import 'package:flutter/services.dart';
 
 enum PDFViewState { shouldStart, startLoad, finishLoad }
 
-class PDFViewerPlugin {
+class PDFViewerHorPlugin extends ChangeNotifier {
   final _channel = const MethodChannel("flutter_pdf_plugin");
-  static PDFViewerPlugin? _instance;
+  static PDFViewerHorPlugin? _instance;
 
-  factory PDFViewerPlugin() => _instance ??= new PDFViewerPlugin._();
-  PDFViewerPlugin._() {
+  int _pageCount = 0;
+  get pageCount => _pageCount;
+
+  int _currentPage = 1;
+  get currentPage => _currentPage;
+
+  factory PDFViewerHorPlugin() => _instance ??= new PDFViewerHorPlugin._();
+  PDFViewerHorPlugin._() {
     _channel.setMethodCallHandler(_handleMessages);
   }
 
@@ -22,6 +28,14 @@ class PDFViewerPlugin {
     switch (call.method) {
       case 'onDestroy':
         _onDestroy.add(null);
+        break;
+      case 'loadComplete':
+        _pageCount = call.arguments;
+        notifyListeners();
+        break;
+      case 'pageChanged':
+        _currentPage = call.arguments;
+        notifyListeners();
         break;
     }
   }

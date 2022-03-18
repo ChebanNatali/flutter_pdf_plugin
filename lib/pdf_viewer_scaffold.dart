@@ -4,15 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pdf_plugin/pdf_viewer_plugin.dart';
 
 class PdfScaffold extends StatefulWidget {
-  final PreferredSizeWidget? appBar;
   final String path;
-  final bool primary;
+  final double? topPadding;
+  final double? height;
+  final double? width;
+
 
   const PdfScaffold({
     Key? key,
-    this.appBar,
     required this.path,
-    this.primary = true,
+   this.topPadding,
+    required this.height,
+    required this.width,
   }) : super(key: key);
 
   @override
@@ -20,30 +23,30 @@ class PdfScaffold extends StatefulWidget {
 }
 
 class _PDFViewScaffoldState extends State<PdfScaffold> {
-  final pdfViwerRef = new PDFViewerPlugin();
+  final pdfViewerRef = new PDFViewerPlugin();
   Rect ?_rect;
   Timer ?_resizeTimer;
 
   @override
   void initState() {
     super.initState();
-    pdfViwerRef.close();
+    pdfViewerRef.close();
   }
 
   @override
   void dispose() {
     super.dispose();
-    pdfViwerRef.close();
-    pdfViwerRef.dispose();
+    pdfViewerRef.close();
+    pdfViewerRef.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  /*void launchOrResizePDFRect() {
     if (_rect == null) {
       _rect = _buildRect(context);
-      pdfViwerRef.launch(
+      pdfViwerRef.launchH(
         widget.path,
         rect: _rect,
+        swipeHorizontal: true,
       );
     } else {
       final rect = _buildRect(context);
@@ -55,23 +58,40 @@ class _PDFViewScaffoldState extends State<PdfScaffold> {
         });
       }
     }
-    return new Scaffold(
-        appBar: widget.appBar,
-        body: const Center(child: const CircularProgressIndicator()));
+  }*/
+
+  @override
+  Widget build(BuildContext context) {
+  //  launchOrResizePDFRect();
+    if (_rect == null) {
+      _rect = _buildRect(context);
+      pdfViewerRef.launch(
+        widget.path,
+        rect: _rect,
+       // swipeHorizontal: true,
+      );
+    } else {
+      final rect = _buildRect(context);
+      if (_rect != rect) {
+        _rect = rect;
+        _resizeTimer?.cancel();
+        _resizeTimer = new Timer(new Duration(milliseconds: 300), () {
+          pdfViewerRef.resize(_rect!);
+        });
+      }
+    }
+    return new Container(
+        child: const SizedBox(width: 1,height: 1,)
+    );
   }
 
   Rect _buildRect(BuildContext context) {
-    final fullscreen = widget.appBar == null;
-
-    final mediaQuery = MediaQuery.of(context);
-    final topPadding = widget.primary ? mediaQuery.padding.top : 0.0;
-    final top =
-        fullscreen ? 0.0 : widget.appBar!.preferredSize.height + topPadding;
-    var height = mediaQuery.size.height - top;
+    final topPadding = widget.topPadding != null ? widget.topPadding : 0.0;
+    final top =topPadding;
+    var height = widget.height!;// - top!;
     if (height < 0.0) {
       height = 0.0;
     }
-
-    return new Rect.fromLTWH(0.0, top, mediaQuery.size.width, height);
+    return new Rect.fromLTWH(0.0, top!, widget.width!, height);
   }
 }
