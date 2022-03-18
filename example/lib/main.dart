@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdf_plugin/pdf_viewer_scaffold.dart';
+import 'package:flutter_pdf_plugin/pdf_viewer_hor_scaffold.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() {
@@ -20,7 +20,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String pathPDF = "";
-
+  final url = "https://norilsktgaz-mobile-app.ru/storage/2022/01/30/f48920783d3f7de322f9e0da5a17664444ee7d66.pdf";
   @override
   void initState() {
     super.initState();
@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<File> createFileOfPdfUrl() async {
-    final url = "https://norilsktgaz-mobile-app.ru/storage/2022/01/30/f48920783d3f7de322f9e0da5a17664444ee7d66.pdf";
+
     final filename = url.substring(url.lastIndexOf("/") + 1);
     var request = await HttpClient().getUrl(Uri.parse(url));
     var response = await request.close();
@@ -51,14 +51,23 @@ class _MyAppState extends State<MyApp> {
       appBar: AppBar(title: const Text('Plugin example app')),
       body: Center(
         child:
-
-        PdfScaffold(
+        pathPDF.length>0?
+        PdfHorScaffold(
           path: pathPDF,
           topPadding:100,
           height: mediaQuery.size.height-150,
           width: mediaQuery.size.width,
 
-        )
+        )/*PdfScaffold(
+          path: pathPDF,
+          topPadding:100,
+          height: mediaQuery.size.height-150,
+          width: mediaQuery.size.width,
+
+        )*/:
+    const CircularProgressIndicator()
+
+
       ),
     );
   }

@@ -1,16 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pdf_plugin/pdf_viewer_plugin.dart';
+import 'package:flutter_pdf_plugin/pdf_viewer_hor_plugin.dart';
 
-class PdfScaffold extends StatefulWidget {
+
+class PdfHorScaffold extends StatefulWidget {
   final String path;
   final double? topPadding;
   final double? height;
   final double? width;
 
 
-  const PdfScaffold({
+  const PdfHorScaffold({
     Key? key,
     required this.path,
    this.topPadding,
@@ -22,8 +23,8 @@ class PdfScaffold extends StatefulWidget {
   _PDFViewScaffoldState createState() => new _PDFViewScaffoldState();
 }
 
-class _PDFViewScaffoldState extends State<PdfScaffold> {
-  final pdfViewerRef = new PDFViewerPlugin();
+class _PDFViewScaffoldState extends State<PdfHorScaffold> {
+  final pdfViewerRef = new PDFViewerHorPlugin();
   Rect ?_rect;
   Timer ?_resizeTimer;
 
@@ -40,13 +41,13 @@ class _PDFViewScaffoldState extends State<PdfScaffold> {
     pdfViewerRef.dispose();
   }
 
-  void launchOrResizePDFRect() {
+ void launchOrResizePDFHRect() {
     if (_rect == null) {
       _rect = _buildRect(context);
-      pdfViewerRef.launch(
+      pdfViewerRef.launchH(
         widget.path,
         rect: _rect,
-        // swipeHorizontal: true,
+        swipeHorizontal: true,
       );
     } else {
       final rect = _buildRect(context);
@@ -59,9 +60,11 @@ class _PDFViewScaffoldState extends State<PdfScaffold> {
       }
     }
   }
+
+
   @override
   Widget build(BuildContext context) {
-  launchOrResizePDFRect();
+    launchOrResizePDFHRect();
 
     return new Container(
         child: const SizedBox(width: 1,height: 1,)
