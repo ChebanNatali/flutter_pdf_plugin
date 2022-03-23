@@ -25,11 +25,11 @@ class FlutterFullPdfViewerManager {
         this.activity = activity;
     }
 
-    void openPDF(String path) {
+    void openPDF(String path,boolean isSwipeHorizontal) {
         File file = new File(path);
         pdfView.fromFile(file)
                 .enableSwipe(true)
-                .swipeHorizontal(false)
+                .swipeHorizontal(isSwipeHorizontal)
                 .enableDoubletap(true)
                 .defaultPage(0)
                 .load();

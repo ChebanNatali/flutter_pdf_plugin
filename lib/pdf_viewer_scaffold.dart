@@ -8,6 +8,7 @@ class PdfScaffold extends StatefulWidget {
   final double? topPadding;
   final double? height;
   final double? width;
+  final bool? swipeHorizontal;
 
 
   const PdfScaffold({
@@ -16,6 +17,7 @@ class PdfScaffold extends StatefulWidget {
    this.topPadding,
     required this.height,
     required this.width,
+    this.swipeHorizontal=false,
   }) : super(key: key);
 
   @override
@@ -46,7 +48,7 @@ class _PDFViewScaffoldState extends State<PdfScaffold> {
       pdfViewerRef.launch(
         widget.path,
         rect: _rect,
-        // swipeHorizontal: true,
+        swipeHorizontal: widget.swipeHorizontal,
       );
     } else {
       final rect = _buildRect(context);

@@ -10,10 +10,12 @@ class PdfNetScaffold extends StatelessWidget {
   final double? topPadding;
   final double? height;
   final double? width;
+  final bool? swipeHorizontal;
 
   PdfNetScaffold({Key? key, required this.pdfUrl, this.topPadding,
     required this.height,
-    required this.width,})
+    required this.width,
+    this.swipeHorizontal=false,})
       : super(key: key);
 
   @override
@@ -34,8 +36,10 @@ class PdfNetScaffold extends StatelessWidget {
         }
         return PdfScaffold(
           path: snapshot.data!.path,
+          topPadding:topPadding,
           height: height,
           width: width,
+          swipeHorizontal: swipeHorizontal,
         );
       },
     );

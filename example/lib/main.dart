@@ -3,7 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdf_plugin/pdf_viewer_hor_scaffold.dart';
+import 'package:flutter_pdf_plugin/pdf_viewer_scaffold.dart';
+import 'package:flutter_pdf_plugin/pdf_net_view.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() {
@@ -24,12 +25,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    createFileOfPdfUrl().then((f) {
+   /* createFileOfPdfUrl().then((f) {
       setState(() {
         pathPDF = f.path;
         print(pathPDF);
       });
-    });
+    });*/
   }
 
   Future<File> createFileOfPdfUrl() async {
@@ -50,24 +51,22 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: AppBar(title: const Text('Plugin example app')),
       body: Center(
-        child:
-        pathPDF.length>0?
-        PdfHorScaffold(
+        child:PdfNetScaffold(
+            pdfUrl: url,
+            topPadding:100,
+            height: mediaQuery.size.height-150,
+            width: mediaQuery.size.width,
+            swipeHorizontal:true
+        )
+       /* pathPDF.length>0?
+        PdfScaffold(
           path: pathPDF,
           topPadding:100,
           height: mediaQuery.size.height-150,
           width: mediaQuery.size.width,
-
-        )/*PdfScaffold(
-          path: pathPDF,
-          topPadding:100,
-          height: mediaQuery.size.height-150,
-          width: mediaQuery.size.width,
-
-        )*/:
-    const CircularProgressIndicator()
-
-
+            swipeHorizontal:true
+        ):
+    const CircularProgressIndicator()*/
       ),
     );
   }

@@ -58,12 +58,13 @@ public class FlutterFullPdfViewerPlugin implements MethodCallHandler, PluginRegi
 
     private void openPDF(MethodCall call, MethodChannel.Result result) {
         String path = call.argument("path");
+        boolean swipeHorizontal = call.hasArgument("swipeHorizontal")? (boolean) call.argument("swipeHorizontal") :false;
         if (flutterFullPdfViewerManager == null || flutterFullPdfViewerManager.closed) {
             flutterFullPdfViewerManager = new FlutterFullPdfViewerManager(activity);
         }
         FrameLayout.LayoutParams params = buildLayoutParams(call);
         activity.addContentView(flutterFullPdfViewerManager.pdfView, params);
-        flutterFullPdfViewerManager.openPDF(path);
+        flutterFullPdfViewerManager.openPDF(path,swipeHorizontal);
         result.success(null);
     }
 

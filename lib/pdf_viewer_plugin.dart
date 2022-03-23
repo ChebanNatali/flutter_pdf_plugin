@@ -25,19 +25,7 @@ class PDFViewerPlugin {
         break;
     }
   }
-  Future<Null> launch(String path, {Rect ?rect}) async {
-    final args = <String, dynamic>{'path': path};
-    if (rect != null) {
-      args['rect'] = {
-        'left': rect.left,
-        'top': rect.top,
-        'width': rect.width,
-        'height': rect.height
-      };
-    }
-    await _channel.invokeMethod('launch', args);
-  }
-Future<Null> launchH(String path,{ bool? swipeHorizontal, Rect? rect}) async {
+  Future<Null> launch(String path, {Rect ?rect,bool? swipeHorizontal}) async {
     final args = <String, dynamic>{
       'path': path,
       'swipeHorizontal': swipeHorizontal,
